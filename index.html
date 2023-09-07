@@ -1,0 +1,59 @@
+<html>
+<head>
+    <title>Permutation Test</title>
+     <meta charset="UTF-8">
+</head>
+<script>
+
+function oxe_perm(src, depth, index) {
+    var perm = src.slice();    
+    perm = perm.split("");
+    perm[depth] = src[index];
+    perm[index] = src[depth];
+    perm = perm.join("");
+    return perm;
+}
+
+function oxe_permutations(src,len) {
+    out = new Array();
+    out.push(src);
+    for (depth = 0; depth < src.length; depth++) {
+        var numInPreviousPass = out.length;
+        for (var m = 0; m < numInPreviousPass; ++m) {
+            for (var n = depth + 1; n < src.length; ++n) {  
+                out.push(oxe_perm(out[m], depth, n));
+            }
+        }
+    }
+
+    filter = new Array();
+    filter.push(out[0].substring(0,len));
+    for (i = 2; i < out.length; i++) {
+        var num = out[i].substring(0,len);
+        if (!filter.includes(num)) {
+            filter.push(num);
+        }
+    }
+
+    return filter.join(' ');
+}
+
+function generate() {
+    var number = document.getElementById('input').value;
+    document.getElementById('txtfield1').value = oxe_permutations(number, 2);
+    document.getElementById('txtfield2').value = oxe_permutations(number, 3);
+}
+
+</script>
+<body>
+ใส่ตัวเลข: <input id="input" name="input" type="text" size="10" value="">
+<br/>
+<button onclick="generate();">แสดงค่า</button>
+<br/><br/>
+แบบ 2 หลัก: <br/>    
+<input id="txtfield1" name="txtfield1" type="text" size="50" value="">
+<br/><br/>
+แบบ 3 หลัก: <br/>    
+<input id="txtfield2" name="txtfield2" type="text" size="100" value="">
+</body>
+</html>
